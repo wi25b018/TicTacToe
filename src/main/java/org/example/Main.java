@@ -36,12 +36,24 @@ public class Main {
         System.out.println("Move accepted.");
         printBoard(board);
     }
-
     private static void printBoard(char[] board) {
         System.out.println();
-        System.out.println(board[0] + " | " + board[1] + " | " + board[2]);
-        System.out.println(board[3] + " | " + board[4] + " | " + board[5]);
-        System.out.println(board[6] + " | " + board[7] + " | " + board[8]);
+        System.out.println("Current game board:");
+        System.out.println();
+        System.out.println(formatCell(board, 0) + " | " + formatCell(board, 1) + " | " + formatCell(board, 2));
+        System.out.println("--+---+--");
+        System.out.println(formatCell(board, 3) + " | " + formatCell(board, 4) + " | " + formatCell(board, 5));
+        System.out.println("--+---+--");
+        System.out.println(formatCell(board, 6) + " | " + formatCell(board, 7) + " | " + formatCell(board, 8));
         System.out.println();
     }
+
+    private static char formatCell(char[] board, int index) {
+        if (board[index] == EMPTY) {
+            return Character.forDigit(index + 1, 10);
+        }
+
+        return board[index];
+    }
+
 }
