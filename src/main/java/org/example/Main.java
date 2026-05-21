@@ -6,44 +6,55 @@ public class Main {
     private static final char EMPTY = '-';
 
     public static void main(String[] args) {
-        char[] board = {
-                EMPTY, EMPTY, EMPTY,
-                EMPTY, EMPTY, EMPTY,
-                EMPTY, EMPTY, EMPTY
-        };
-
         Scanner scanner = new Scanner(System.in);
+        boolean playAgain = true;
 
-        printBoard(board);
+        while (playAgain) {
+            char[] board = {
+                    EMPTY, EMPTY, EMPTY,
+                    EMPTY, EMPTY, EMPTY,
+                    EMPTY, EMPTY, EMPTY
+            };
 
-        System.out.print("Choose an empty square from 1 to 9: ");
-        int square = scanner.nextInt();
+            printBoard(board);
 
-        if (square < 1 || square > 9) {
-            System.out.println("Invalid square. Please choose a number from 1 to 9.");
-            return;
+            System.out.print("Choose an empty square from 1 to 9: ");
+            int square = scanner.nextInt();
+
+            if (square < 1 || square > 9) {
+                System.out.println("Invalid square. Please choose a number from 1 to 9.");
+                continue;
+            }
+
+            int index = square - 1;
+
+            if (board[index] != EMPTY) {
+                System.out.println("This square is already taken.");
+                continue;
+            }
+
+            board[index] = 'X';
+
+            System.out.println("Move accepted.");
+            printBoard(board);
+
+            if (hasWinner(board, 'X')) {
+                System.out.println("X wins!");
+            } else if (isDraw(board)) {
+                System.out.println("The game is a draw.");
+            } else {
+                System.out.println("Game continues.");
+            }
+
+            System.out.print("Do you want to start a new game? yes/no: ");
+            String answer = scanner.next();
+
+            playAgain = answer.equalsIgnoreCase("yes");
         }
 
-        int index = square - 1;
-
-        if (board[index] != EMPTY) {
-            System.out.println("This square is already taken.");
-            return;
-        }
-
-        board[index] = 'X';
-
-        System.out.println("Move accepted.");
-        printBoard(board);
-
-        if (hasWinner(board, 'X')) {
-            System.out.println("X wins!");
-        } else if (isDraw(board)) {
-            System.out.println("The game is a draw.");
-        } else {
-            System.out.println("Game continues.");
-        }
+        System.out.println("Game ended.");
     }
+
     private static void printBoard(char[] board) {
         System.out.println();
         System.out.println("Current game board:");
@@ -62,8 +73,8 @@ public class Main {
         }
 
         return board[index];
-
     }
+
     private static boolean hasWinner(char[] board, char player) {
         int[][] winningCombinations = {
                 {0, 1, 2},
@@ -96,5 +107,4 @@ public class Main {
 
         return !hasWinner(board, 'X') && !hasWinner(board, 'O');
     }
-
 }
