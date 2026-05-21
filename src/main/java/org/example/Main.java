@@ -35,6 +35,14 @@ public class Main {
 
         System.out.println("Move accepted.");
         printBoard(board);
+
+        if (hasWinner(board, 'X')) {
+            System.out.println("X wins!");
+        } else if (isDraw(board)) {
+            System.out.println("The game is a draw.");
+        } else {
+            System.out.println("Game continues.");
+        }
     }
     private static void printBoard(char[] board) {
         System.out.println();
@@ -54,6 +62,39 @@ public class Main {
         }
 
         return board[index];
+
+    }
+    private static boolean hasWinner(char[] board, char player) {
+        int[][] winningCombinations = {
+                {0, 1, 2},
+                {3, 4, 5},
+                {6, 7, 8},
+                {0, 3, 6},
+                {1, 4, 7},
+                {2, 5, 8},
+                {0, 4, 8},
+                {2, 4, 6}
+        };
+
+        for (int[] combination : winningCombinations) {
+            if (board[combination[0]] == player
+                    && board[combination[1]] == player
+                    && board[combination[2]] == player) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean isDraw(char[] board) {
+        for (char cell : board) {
+            if (cell == EMPTY) {
+                return false;
+            }
+        }
+
+        return !hasWinner(board, 'X') && !hasWinner(board, 'O');
     }
 
 }
