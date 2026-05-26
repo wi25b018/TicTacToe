@@ -10,40 +10,55 @@ public class Main {
         boolean playAgain = true;
 
         while (playAgain) {
+
             char[] board = {
                     EMPTY, EMPTY, EMPTY,
                     EMPTY, EMPTY, EMPTY,
                     EMPTY, EMPTY, EMPTY
             };
 
-            printBoard(board);
+            char currentPlayer = 'X';
+            boolean gameOver = false;
 
-            System.out.print("Choose an empty square from 1 to 9: ");
-            int square = scanner.nextInt();
+            while (!gameOver) {
 
-            if (square < 1 || square > 9) {
-                System.out.println("Invalid square. Please choose a number from 1 to 9.");
-                continue;
-            }
+                printBoard(board);
 
-            int index = square - 1;
+                System.out.print("Player " + currentPlayer + ", choose an empty square from 1 to 9: ");
+                int square = scanner.nextInt();
 
-            if (board[index] != EMPTY) {
-                System.out.println("This square is already taken.");
-                continue;
-            }
+                if (square < 1 || square > 9) {
+                    System.out.println("Invalid square. Please choose a number from 1 to 9.");
+                    continue;
+                }
 
-            board[index] = 'X';
+                int index = square - 1;
 
-            System.out.println("Move accepted.");
-            printBoard(board);
+                if (board[index] != EMPTY) {
+                    System.out.println("This square is already taken.");
+                    continue;
+                }
 
-            if (hasWinner(board, 'X')) {
-                System.out.println("X wins!");
-            } else if (isDraw(board)) {
-                System.out.println("The game is a draw.");
-            } else {
-                System.out.println("Game continues.");
+                board[index] = currentPlayer;
+
+                if (hasWinner(board, currentPlayer)) {
+                    printBoard(board);
+                    System.out.println(currentPlayer + " wins!");
+                    gameOver = true;
+
+                } else if (isDraw(board)) {
+                    printBoard(board);
+                    System.out.println("The game is a draw.");
+                    gameOver = true;
+
+                } else {
+
+                    if (currentPlayer == 'X') {
+                        currentPlayer = 'O';
+                    } else {
+                        currentPlayer = 'X';
+                    }
+                }
             }
 
             System.out.print("Do you want to start a new game? yes/no: ");
@@ -59,15 +74,20 @@ public class Main {
         System.out.println();
         System.out.println("Current game board:");
         System.out.println();
+
         System.out.println(formatCell(board, 0) + " | " + formatCell(board, 1) + " | " + formatCell(board, 2));
         System.out.println("--+---+--");
+
         System.out.println(formatCell(board, 3) + " | " + formatCell(board, 4) + " | " + formatCell(board, 5));
         System.out.println("--+---+--");
+
         System.out.println(formatCell(board, 6) + " | " + formatCell(board, 7) + " | " + formatCell(board, 8));
+
         System.out.println();
     }
 
     private static char formatCell(char[] board, int index) {
+
         if (board[index] == EMPTY) {
             return Character.forDigit(index + 1, 10);
         }
@@ -76,6 +96,7 @@ public class Main {
     }
 
     private static boolean hasWinner(char[] board, char player) {
+
         int[][] winningCombinations = {
                 {0, 1, 2},
                 {3, 4, 5},
@@ -88,9 +109,11 @@ public class Main {
         };
 
         for (int[] combination : winningCombinations) {
+
             if (board[combination[0]] == player
                     && board[combination[1]] == player
                     && board[combination[2]] == player) {
+
                 return true;
             }
         }
@@ -99,7 +122,9 @@ public class Main {
     }
 
     private static boolean isDraw(char[] board) {
+
         for (char cell : board) {
+
             if (cell == EMPTY) {
                 return false;
             }
